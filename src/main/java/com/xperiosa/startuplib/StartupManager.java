@@ -197,7 +197,7 @@ public class StartupManager
 
 	/**
 	 * Does windows registry startup exist?
-	 * 
+	 *
 	 * @return true if windows registry startup exists
 	 */
 	public boolean getWindowsRegistryStartupExists()
@@ -213,7 +213,7 @@ public class StartupManager
 	 */
 	public File getWindowsStartupFile()
 	{
-		return Paths.get(String.format("C:\\Users\\" + System.getProperty("user.home") + "\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\" + name + ".lnk")).toFile();
+		return Paths.get(String.format(System.getProperty("user.home") + "\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\" + name + ".lnk")).toFile();
 	}
 
 	/**
@@ -245,17 +245,17 @@ public class StartupManager
 		}
 		return new File(startupDir, this.name + ".desktop");
 	}
-	
+
 	/**
 	 * Startup exists
-	 * 
+	 *
 	 * @return true if startup exists
 	 */
-	public boolean exists() 
+	public boolean exists()
 	{
-	    return this.getWindowsRegistryStartupExists() 
-		    || this.getWindowsStartupFile().exists() 
-		    || this.getMacStartupFile().exists() 
-		    || this.getUnixStartupFile().exists();
+		return this.getWindowsRegistryStartupExists()
+				|| this.getWindowsStartupFile().exists()
+				|| this.getMacStartupFile().exists()
+				|| this.getUnixStartupFile().exists();
 	}
 }

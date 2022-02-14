@@ -166,7 +166,7 @@ public class StartupManagerLite
 	 */
 	public File getWindowsStartupFile()
 	{
-		return Paths.get(String.format("C:\\Users\\" + System.getProperty("user.home") + "\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\" + name + ".lnk")).toFile();
+		return Paths.get(String.format(System.getProperty("user.home") + "\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\" + name + ".lnk")).toFile();
 	}
 
 	/**

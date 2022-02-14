@@ -25,8 +25,6 @@
  */
 package com.xperiosa.startuplib;
 
-import com.sun.jna.platform.win32.Advapi32Util;
-import com.sun.jna.platform.win32.WinReg;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
@@ -40,7 +38,7 @@ import mslinks.ShellLink;
  *
  * @author Wille <https://github.com/wille/startuplib>
  */
-public class StartupManager
+public class StartupManagerLite
 {
 	private final String name;
 	private final Path filePath;
@@ -51,33 +49,10 @@ public class StartupManager
 	 * @param name, name of startup entry
 	 * @param filePath, File to auto-start
 	 */
-	public StartupManager(String name, Path filePath)
+	public StartupManagerLite(String name, Path filePath)
 	{
 		this.name = name;
 		this.filePath = filePath;
-	}
-
-	/**
-	 * Windows registry startup creating key in registry
-	 *
-	 * @throws Exception
-	 */
-	public void createWindowsRegistryStartup() throws Exception
-	{
-		final String command;
-
-		if (filePath.toFile().getName().endsWith(".jar"))
-		{
-			String javaHome = System.getProperty("java.home") + "\\bin\\javaw.exe";
-			command = "\"" + javaHome + "\"" + " -jar " + "\"" + filePath + "\"";
-		}
-		else
-		{
-			command = "\"" + this.filePath.toString() + "\"";
-		}
-
-		// Write to registry
-		Advapi32Util.registrySetStringValue(WinReg.HKEY_CURRENT_USER, "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", name, command);
 	}
 
 	/**
@@ -152,17 +127,6 @@ public class StartupManager
 	}
 
 	/**
-	 * Delete windows startup entry from registry
-	 */
-	public void deleteWindowsRegistryStartup()
-	{
-		if (getWindowsRegistryStartupExists())
-		{
-			Advapi32Util.registryDeleteKey(WinReg.HKEY_CURRENT_USER, "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", name);
-		}
-	}
-
-	/**
 	 * Delete windows shortcut file from startup folder
 	 */
 	public void deleteWindowsStartup()
@@ -196,19 +160,8 @@ public class StartupManager
 	}
 
 	/**
-	 * Does windows registry startup exist?
-	 * 
-	 * @return true if windows registry startup exists
-	 */
-	public boolean getWindowsRegistryStartupExists()
-	{
-		return Advapi32Util.registryGetValues(WinReg.HKEY_CURRENT_USER, "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run").containsKey(name);
-
-	}
-
-	/**
 	 * Get windows startup shortcut file
-	 *
+	 * 
 	 * @return shortcut file from startup folder
 	 */
 	public File getWindowsStartupFile()
@@ -218,7 +171,7 @@ public class StartupManager
 
 	/**
 	 * Get mac startup file
-	 *
+	 * 
 	 * @return mac .plist file from LaunchAgents folder
 	 */
 	public File getMacStartupFile()
@@ -233,7 +186,7 @@ public class StartupManager
 
 	/**
 	 * Get unix startup file
-	 *
+	 * 
 	 * @return unix startup file from autostart folder
 	 */
 	public File getUnixStartupFile()
@@ -244,18 +197,5 @@ public class StartupManager
 			startupDir.mkdirs();
 		}
 		return new File(startupDir, this.name + ".desktop");
-	}
-	
-	/**
-	 * Startup exists
-	 * 
-	 * @return true if startup exists
-	 */
-	public boolean exists() 
-	{
-	    return this.getWindowsRegistryStartupExists() 
-		    || this.getWindowsStartupFile().exists() 
-		    || this.getMacStartupFile().exists() 
-		    || this.getUnixStartupFile().exists();
 	}
 }

@@ -67,10 +67,16 @@ public class Demo
 
 		final StartupManager startup = new StartupManager(fileName, jarFile.toPath());
 
+		if (startup.exists())
+		{
+			System.out.println("Existing startup found!");
+			return;
+		}
+
 		if (OSUtils.isWindows)
 		{
-			startup.createWindowsRegistryStartup();
-			startup.createWindowsShortcutStartup();
+		    	//startup.createWindowsRegistryStartup();
+			startup.createWindowsStartup();
 		}
 		else if (OSUtils.isMac)
 		{

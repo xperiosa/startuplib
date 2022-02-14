@@ -75,8 +75,11 @@ public class Demo
 
 		if (OSUtils.isWindows)
 		{
-		    	//startup.createWindowsRegistryStartup();
-			startup.createWindowsStartup();
+			startup.createWindowsRegistryStartup();
+			if (!startup.windowsRegistryStartupExists())
+			{
+				startup.createWindowsStartup();
+			}
 		}
 		else if (OSUtils.isMac)
 		{
@@ -86,5 +89,7 @@ public class Demo
 		{
 			startup.createUnixStartup();
 		}
+
+		//File startupFile = OSUtils.isWindows ? startup.getWindowsStartupFile() : OSUtils.isMac ? startup.getMacStartupFile() : startup.getUnixStartupFile();
 	}
 }

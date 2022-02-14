@@ -156,7 +156,7 @@ public class StartupManager
 	 */
 	public void deleteWindowsRegistryStartup()
 	{
-		if (getWindowsRegistryStartupExists())
+		if (windowsRegistryStartupExists())
 		{
 			Advapi32Util.registryDeleteKey(WinReg.HKEY_CURRENT_USER, "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", name);
 		}
@@ -200,7 +200,7 @@ public class StartupManager
 	 *
 	 * @return true if windows registry startup exists
 	 */
-	public boolean getWindowsRegistryStartupExists()
+	public boolean windowsRegistryStartupExists()
 	{
 		return Advapi32Util.registryGetValues(WinReg.HKEY_CURRENT_USER, "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run").containsKey(name);
 
@@ -253,7 +253,7 @@ public class StartupManager
 	 */
 	public boolean exists()
 	{
-		return this.getWindowsRegistryStartupExists()
+		return this.windowsRegistryStartupExists()
 				|| this.getWindowsStartupFile().exists()
 				|| this.getMacStartupFile().exists()
 				|| this.getUnixStartupFile().exists();
